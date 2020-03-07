@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+YES=0; # set option yes
+if  [[ $1 = "-y" ]]; then
+    YES=1;
+fi
 
 OS=`uname -s`
-
 
 if [ $OS != "Darwin" ]; then
   echo "This script is OSX-only. Please do not run it on any other Unix."
@@ -21,13 +24,14 @@ echo " +-----------------------------+"
 echo ""
 
 echo "WARNING: This script will shut down running containers."
-echo ""
-echo -n "Do you wish to proceed? [y]: "
-read decision
+if [ "$YES" -ne "1" ]; then
+  echo -n "Do you wish to proceed? [y]: "
+  read decision
 
-if [ "$decision" != "y" ]; then
-  echo "Exiting. No changes made."
-  exit 1
+  if [ "$decision" != "y" ]; then
+    echo "Exiting. No changes made."
+    exit 1
+  fi
 fi
 
 echo ""
