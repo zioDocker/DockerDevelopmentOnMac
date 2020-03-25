@@ -45,7 +45,7 @@ open -a Docker
 while ! docker ps > /dev/null 2>&1 ; do sleep 2; done
 
 echo "== Stopping running docker containers..."
-docker-compose down -v > /dev/null 2>&1
+docker-compose down -v -f > /dev/null 2>&1
 docker volume prune -f > /dev/null
 
 osascript -e 'quit app "Docker"'
@@ -55,16 +55,12 @@ G=`id -g`
 echo "== Resetting folder permissions ->$U:$G"
 sudo chown -Rf "$U":"$G" $(pwd)
 
-
 echo "== Setting up nfs..."
-LINE="$(pwd) -alldirs -mapall=$U:$G localhost"
 FILE=/etc/exports
-sudo cp /dev/null $FILE
-grep -qF -- "$LINE" "$FILE" || sudo echo "$LINE" | sudo tee -a $FILE > /dev/null
+sudo cp "$(pwd)/configuration/etc/exports" $FILE
 
-LINE="nfs.server.mount.require_resv_port = 0"
 FILE=/etc/nfs.conf
-grep -qF -- "$LINE" "$FILE" || sudo echo "$LINE" | sudo tee -a $FILE > /dev/null
+sudo cp "$(pwd)/configuration/etc/nfs.conf" $FILE
 
 echo "== Restarting nfsd..."
 sudo nfsd restart
