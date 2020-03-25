@@ -10,7 +10,7 @@ Technlogies used:
 ## How use it
 clone this repo in your future project:
 ```
-git clone git@github.com:ridesoft/nfsForDockerForMac.git {my-project}
+git clone git@github.com:learning-by-failing/DockerDevelopmentOnMac.git {my-project}
 ```
 
 Go to your new project, remove the git directory and start to create your new project with your new repo or add your new project like a git submodule
