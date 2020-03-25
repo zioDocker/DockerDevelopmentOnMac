@@ -2,7 +2,7 @@
 Optimised docker development environent for Mac Os.
 ---
 
-This repo has the purpose to provide an optimised docker environment for Mac Os.
+This repo has the purpose to provide an optimised docker environment for Mac Os using NFS.
 
 Technlogies used:
 * [NFS](https://en.wikipedia.org/wiki/Network_File_System)
