@@ -14,6 +14,6 @@ git clone git@github.com:ridesoft/nfsForDockerForMac.git {my-project}
 
 Go to your new project, remove the git directory and start to create your new project with your new repo or add your new project like a git submodule
 
-[Here and example](https://github.com/ridesoft/magento2ceDevEnvironment) about how this could work with a repo handling Magento2.
+[Here and example](https://github.com/learning-by-failing/magento2ceDevEnvironment) about how this could work with a repo handling Magento2.
 
 **Now before spin up your containers, just run `./nfs-start.sh` to start nfs server**
