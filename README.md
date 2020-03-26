@@ -13,7 +13,7 @@ Technlogies used:
 ## How use it
 clone this repository:
 ```
-git clone git@github.com:learning-by-failing/DockerDevelopmentOnMac.git {my-project}
+git clone git@github.com:zioDocker/DockerDevelopmentOnMac.git {my-project}
 ```
 
 Now go in the folder **configuration/etc/exports** and add the path of the folders where your docker containers
