@@ -37,8 +37,13 @@ volumes:
       o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
 ```
 
+**Volume options are the most important part in your volume declaration, please use the same of the example above**
+
 ## Ispirations
-This scipt is inspired from this 
+- [http://nfs.sourceforge.net/](http://nfs.sourceforge.net/)
+- This scipt is inspired from this 
 [gist repo](https://gist.github.com/seanhandley/7dad300420e5f8f02e7243b7651c6657#file-setup_native_nfs_docker_osx-sh) 
 and is resuming the solution coming from [this discussion](https://github.com/docker/for-mac/issues/1592)
+- [https://www.tecmint.com/how-to-setup-nfs-server-in-linux/](https://www.tecmint.com/how-to-setup-nfs-server-in-linux/)
+- [https://docs.docker.com/engine/reference/commandline/volume_create/](https://docs.docker.com/engine/reference/commandline/volume_create/)
 
