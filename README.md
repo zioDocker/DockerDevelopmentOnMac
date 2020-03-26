@@ -40,7 +40,9 @@ volumes:
 [Here and example](https://github.com/learning-by-failing/magento2ceDevEnvironment) about how this could work with a repo handling Magento2.
 
 ## Ispirations
-This scipt is inspired from this 
+- This scipt is inspired from this 
 [gist repo](https://gist.github.com/seanhandley/7dad300420e5f8f02e7243b7651c6657#file-setup_native_nfs_docker_osx-sh) 
 and is resuming the solution coming from [this discussion](https://github.com/docker/for-mac/issues/1592)
+- [https://www.tecmint.com/how-to-setup-nfs-server-in-linux/](https://www.tecmint.com/how-to-setup-nfs-server-in-linux/)
+- [https://docs.docker.com/engine/reference/commandline/volume_create/](https://docs.docker.com/engine/reference/commandline/volume_create/)
 

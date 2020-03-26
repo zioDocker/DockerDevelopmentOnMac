@@ -60,7 +60,7 @@ do
   echo "== changing file permission to ${LINE}"
   sudo chown -Rf "$U":"$G" $LINE
   echo "== add line to /etc/exports"
-  echo "${LINE} -alldirs -mapall=${U}:${G} localhost" >> "$(pwd)/builds/exports"
+  echo "${LINE} -alldirs -mapall=${U}:${G} localhost(rw,sync,no_root_squash)git " >> "$(pwd)/builds/exports"
 done < "$FILE"
 
 FILE=/etc/exports
