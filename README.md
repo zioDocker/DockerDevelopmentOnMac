@@ -37,6 +37,8 @@ volumes:
       o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
 ```
 
+**Volume options are the most important part in your volume declaration, please use the same of the example above**
+
 ## Ispirations
 - This scipt is inspired from this 
 [gist repo](https://gist.github.com/seanhandley/7dad300420e5f8f02e7243b7651c6657#file-setup_native_nfs_docker_osx-sh) 
