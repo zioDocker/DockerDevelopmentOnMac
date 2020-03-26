@@ -13,7 +13,7 @@ Technlogies used:
 ## How use it
 clone this repository:
 ```
-git clone git@github.com:learning-by-failing/DockerDevelopmentOnMac.git {my-project}
+git clone git@github.com:zioDocker/DockerDevelopmentOnMac.git {my-project}
 ```
 
 Now go in the folder **configuration/etc/exports** and add the path of the folders where your docker containers
@@ -36,8 +36,6 @@ volumes:
       device: ':${PWD}'
       o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
 ```
-
-[Here and example](https://github.com/learning-by-failing/magento2ceDevEnvironment) about how this could work with a repo handling Magento2.
 
 ## Ispirations
 - This scipt is inspired from this 
