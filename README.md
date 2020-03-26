@@ -40,6 +40,7 @@ volumes:
 **Volume options are the most important part in your volume declaration, please use the same of the example above**
 
 ## Ispirations
+- [http://nfs.sourceforge.net/](http://nfs.sourceforge.net/)
 - This scipt is inspired from this 
 [gist repo](https://gist.github.com/seanhandley/7dad300420e5f8f02e7243b7651c6657#file-setup_native_nfs_docker_osx-sh) 
 and is resuming the solution coming from [this discussion](https://github.com/docker/for-mac/issues/1592)
