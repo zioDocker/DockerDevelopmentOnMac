@@ -44,27 +44,32 @@ open -a Docker
 
 while ! docker ps > /dev/null 2>&1 ; do sleep 2; done
 
-echo "== Stopping running docker containers..."
-docker-compose down -v > /dev/null 2>&1
+echo "== Stopping and removing running docker containers..."
+docker container rm $(docker container ls -q) -f -v > /dev/null 2>&1
 docker volume prune -f > /dev/null
 
 osascript -e 'quit app "Docker"'
-
 U=`id -u`
 G=`id -g`
-echo "== Resetting folder permissions ->$U:$G"
-sudo chown -Rf "$U":"$G" $(pwd)
-
 
 echo "== Setting up nfs..."
-LINE="$(pwd) -alldirs -mapall=$U:$G localhost"
-FILE=/etc/exports
-sudo cp /dev/null $FILE
-grep -qF -- "$LINE" "$FILE" || sudo echo "$LINE" | sudo tee -a $FILE > /dev/null
+FILE="$(pwd)/configuration/etc/exports"
+CONTENT=""
+while IFS= read -r LINE
+do
+  echo "== changing file permission to ${LINE}"
+  sudo chown -Rf "$U":"$G" $LINE
+  echo "== add line to /etc/exports"
+  echo "${LINE} -alldirs -mapall=${U}:${G} localhost" >> "$(pwd)/builds/exports"
+done < "$FILE"
 
-LINE="nfs.server.mount.require_resv_port = 0"
+FILE=/etc/exports
+sudo cp "$(pwd)/builds/exports" $FILE
+sudo rm "$(pwd)/builds/exports"
+
+echo "== setting up etc/nfs.conf"
 FILE=/etc/nfs.conf
-grep -qF -- "$LINE" "$FILE" || sudo echo "$LINE" | sudo tee -a $FILE > /dev/null
+sudo cp "$(pwd)/configuration/etc/nfs.conf" $FILE
 
 echo "== Restarting nfsd..."
 sudo nfsd restart
