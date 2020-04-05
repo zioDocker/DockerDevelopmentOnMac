@@ -1,0 +1,30 @@
+################################################################
+# Global configuration
+################################################################
+debug = true
+logLevel = "DEBUG"
+
+# Entrypoints to be used by frontends that do not specify any entrypoint.
+# Each frontend can specify its own entrypoints.
+#
+# Optional
+# Default: ["http"]
+#
+
+[web]
+address = ":8080"
+
+defaultEntryPoints = ["http"]
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+#    [entryPoints.http.redirect]
+#    entryPoint = "https"
+#  [entryPoints.https]
+#  address = ":443"
+#    [entryPoints.https.tls]
+#      [[entryPoints.https.tls.certificates]]
+#      certFile = "traefik.crt"
+#      keyFile = "traefik.key"
+[docker]
+watch = true
