@@ -72,6 +72,12 @@ web:
     networks:
         - reverse-proxy
 ```
+
+Configure your local file host to point all your websites to Traefik:
+```
+127.0.0.1 mywebsite.local
+```
+
 All containers, to be visible outside of traffik, has to be part of the same Traeffik network (*revere-proxy)*
 
 All containers, of the same application(i.e. inside the same docker-compose file) has to share the same network.
