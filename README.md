@@ -78,6 +78,7 @@ All containers, of the same application(i.e. inside the same docker-compose file
 
 For more informations about Traefik and its configuration visit its website.
 
+Check this [repo](https://github.com/learning-by-failing/docker-multiapp) for a practical configuration of Traefik.
 ## Ispirations
 - [http://nfs.sourceforge.net/](http://nfs.sourceforge.net/)
 - This scipt is inspired from this 
