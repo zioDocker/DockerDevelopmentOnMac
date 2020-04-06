@@ -65,7 +65,7 @@ Remember to configure labels inside your docker-compose files for your container
 web:
     image: nginx:latest
     labels:
-        - traefik.backend=puls.local
+        - traefik.backend=mywebsite.local
         - traefik.frontend.rule=Host:mywebsite.local,www.mywebsite.local
         - traefik.docker.network=reverse-proxy
         - traefik.port=80
