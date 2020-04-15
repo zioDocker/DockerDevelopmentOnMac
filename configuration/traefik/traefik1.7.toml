@@ -18,6 +18,8 @@ defaultEntryPoints = ["http"]
 [entryPoints]
   [entryPoints.http]
   address = ":80"
+  [entryPoints.mysql]
+      address = ":3306"
 #    [entryPoints.http.redirect]
 #    entryPoint = "https"
 #  [entryPoints.https]
