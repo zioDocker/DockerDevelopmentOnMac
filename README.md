@@ -64,6 +64,7 @@ Now on [http://localhost:8080](http://localhost:8080) you can find Traefik dashb
 all our running containers.
 Every time you spin up a new container, this is visible immediately on Traefik.
 
+![](doc/traefik2.2dashboard.png)
 
 Inside your *docker-compose* file you need to add the network *reverse-proxy*:
 ```
