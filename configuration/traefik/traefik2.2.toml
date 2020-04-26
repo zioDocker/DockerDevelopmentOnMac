@@ -37,6 +37,8 @@ logLevel = "DEBUG"
   address = ":80"
   [entryPoints.mysql]
   address = ":3306"
+  [entryPoints.elasticsearch]
+  address = ":9200"
 ################################################################
 # Traefik logs configuration
 ################################################################

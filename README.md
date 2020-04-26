@@ -13,7 +13,7 @@ containers: all ports and traffic  are distributed dynamically by the reverse pr
 
 Technlogies used:
 * [NFS](https://en.wikipedia.org/wiki/Network_File_System)
-* [Traefik v1.7](https://github.com/containous/traefik)
+* [Traefik v2.2](https://github.com/containous/traefik)
 
 ## How use it
 clone this repository:
@@ -52,31 +52,44 @@ volumes:
 **Volume options are the most important part in your volume declaration, please use the same of the example above**
 
 ### Reverse proxy (Traefik)
-Run the Traefik with the script:
+Run Traefik with the script:
 ```
+chmod +x reverseProxy-start.sh
 ./reverseProxy-start.sh
 ```
+This script create docker network named *reverse-proxy* that has to added to the containers you want to be available 
+on Traefik.
 
 Now on [http://localhost:8080](http://localhost:8080) you can find Traefik dashboard where is possible to monitor 
 all our running containers.
-Every time you spin up a new container, this is visible immediately on traeffik.
+Every time you spin up a new container, this is visible immediately on Traefik.
+
+
+Inside your *docker-compose* file you need to add the network *reverse-proxy*:
+```
+networks:
+  reverse-proxy:
+      external: true
+```
 Remember to configure labels inside your docker-compose files for your containers, i.e.:
 ```
-web:
-    image: nginx:latest
+ web:
+    image: 'magento/magento-cloud-docker-nginx:latest'
     labels:
-        - traefik.backend=puls.local
-        - traefik.frontend.rule=Host:mywebsite.local,www.mywebsite.local
-        - traefik.docker.network=reverse-proxy
-        - traefik.port=80
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-magento-web.rule=Host(`my-magento.local`)"
+      - "traefik.http.routers.my-magento-web.entrypoints=web"
+    volumes: *fpmVolumes
     networks:
-        - reverse-proxy
+      - reverse-proxy
+      - my-containers-network
 ```
-All containers, to be visible outside of traffik, has to be part of the same Traeffik network (*revere-proxy)*
+All containers, to be visible outside of Traefik, has to be part of the same Traefik network (*revere-proxy)*
 
 All containers, of the same application(i.e. inside the same docker-compose file) has to share the same network.
 
-For more informations about Traefik and its configuration visit its website.
+### Docker-compose examles
+* [magento2](docker-compose-examples/magento2.yml)
 
 ## Ispirations
 - [http://nfs.sourceforge.net/](http://nfs.sourceforge.net/)

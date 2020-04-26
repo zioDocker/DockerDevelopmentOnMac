@@ -1,0 +1,151 @@
+version: '2.1'
+networks:
+  reverse-proxy:
+    external: true
+  my-magento:
+
+services:
+  db:
+    image: 'mariadb:10.2'
+    ports:
+      - 3306:3306
+    volumes:
+      - /var/lib/mysql
+      - './.docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d'
+    environment:
+      - MYSQL_ROOT_PASSWORD=magento2
+      - MYSQL_DATABASE=magento2
+      - MYSQL_USER=magento2
+      - MYSQL_PASSWORD=magento2
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 50
+    networks:
+      - my-magento
+
+
+  redis:
+    image: 'redis:5.0'
+    volumes:
+      - /data
+    ports:
+      - 6379
+    networks:
+      - my-magento
+
+  elasticsearch:
+    image: 'magento/magento-cloud-docker-elasticsearch:6.5'
+    ports:
+      - 9200:9200
+    networks:
+      - my-magento
+
+  fpm:
+    image: my-magento-fpm:1.1
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile-dev
+    ports:
+      - 9000
+    extends: generic
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - PHP_ENABLE_XDEBUG=true
+    volumes: &fpmVolumes
+      - 'magento:/app:delegated'
+      - 'magento-vendor:/app/vendor:delegated'
+      - 'magento-generated:/app/generated:delegated'
+      - 'magento-setup:/app/setup:delegated'
+      - 'magento-static:/app/pub/static:delegated'
+      - 'magento-media:/app/pub/media:delegated'
+      - 'node-modules:/app/node-modules:delegated'
+      - '~/.composer/cache:/root/.composer/cache:delegated'
+      - './.docker/mnt:/mnt'
+      - './.docker/tmp:/tmp'
+      - './.docker/php-cli/conf-dev/zz-mail.ini:/usr/local/etc/php/conf.d/zz-mail.ini'
+    working_dir: /app
+    networks:
+      - my-magento
+
+  m2-cli:
+    image: my-magento-dev:1.1
+    build:
+      context: ./.docker/php-cli
+      dockerfile: Dockerfile-dev
+    hostname: deploy.magento2.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    extends: generic
+    volumes: *fpmVolumes
+    networks:
+      - my-magento
+
+  web:
+    image: 'magento/magento-cloud-docker-nginx:latest'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-magento-web.rule=Host(`my-magento.local`)"
+      - "traefik.http.routers.my-magento-web.entrypoints=web"
+    depends_on:
+      - fpm
+    extends: generic
+    volumes: *fpmVolumes
+    networks:
+      - reverse-proxy
+      - my-magento
+
+  generic:
+    image: alpine
+    environment:
+      - PHP_MEMORY_LIMIT=2048M
+      - UPLOAD_MAX_FILESIZE=64M
+      - MAGENTO_ROOT=/app
+      - MAGENTO_RUN_MODE=developer
+      - PHP_IDE_CONFIG=serverName=my-magento_local_xdebug
+      - XDEBUG_CONFIG=remote_host=host.docker.internal idekey=PHPSTORM remote_port=9002 remote_log=/tmp/xdebug.log remote_enable=1 remote_connect_back=0
+      - 'PHP_EXTENSIONS=bcmath bz2 calendar exif gd gettext intl mysqli pcntl pdo_mysql soap sockets sysvmsg sysvsem sysvshm opcache zip redis xsl'
+      #uncommment next line to use xdebug and restart fpm: docker-compose -f docker-compose-dev.yml restart fpm
+      #- 'PHP_EXTENSIONS=bcmath bz2 calendar exif gd gettext intl mysqli pcntl pdo_mysql soap sockets sysvmsg sysvsem sysvshm opcache zip redis xsl xdebug'
+    env_file:
+      - ./.docker/config.env
+    networks:
+      - my-magento
+
+
+  rabbitmq:
+    image: rabbitmq:3.7-management-alpine
+    ports:
+      - 5672
+      - 15672:15672
+    volumes:
+      - .docker/rabbitmq/etc/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    networks:
+      - my-magento
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025"
+      - "8025:8025"
+    networks:
+      - my-magento
+
+volumes:
+  magento:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':${PWD}'
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+  magento-vendor: {  }
+  magento-generated: {  }
+  magento-setup: {  }
+  magento-var: {  }
+  magento-etc: {  }
+  magento-static: {  }
+  magento-media: {  }
+  node-modules: {  }
