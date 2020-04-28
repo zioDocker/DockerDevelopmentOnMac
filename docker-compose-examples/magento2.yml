@@ -7,8 +7,11 @@ networks:
 services:
   db:
     image: 'mariadb:10.2'
-    ports:
-      - 3306:3306
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.db.rule=HostSNI(`my-db`)"
+      - "traefik.tcp.services.db.loadbalancer.server.port=3306"
+      - "traefik.tcp.routers.db.entrypoints=mysql"
     volumes:
       - /var/lib/mysql
       - './.docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d'
