@@ -20,10 +20,7 @@ clone this repository:
 ```
 git clone git@github.com:zioDocker/DockerDevelopmentOnMac.git {my-project}
 ```
-Now there are three ways to use this repo:
-* Use only the *NFS* server to speed up the filesystem running `/nfs-staert.sh` script
-* Use *traefik* like reverse proxy for all your containers running `./traefik.sh` script
-* Use as Nfs server as traefik running `/dev-start.sh` script.
+Now you can use NFS filesystem running the script `/nfs-staert.sh` and/or execute traefik running `./reverseProxy-start.sh` script
 
 ### NFS Configuration
 Now go in the folder **configuration/etc/exports** and add the path of the folders where your docker containers
