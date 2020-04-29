@@ -25,6 +25,7 @@ services:
       timeout: 10s
       retries: 50
     networks:
+      - reverse-proxy
       - my-magento
 
 
