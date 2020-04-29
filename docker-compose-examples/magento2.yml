@@ -9,7 +9,7 @@ services:
     image: 'mariadb:10.2'
     labels:
       - "traefik.enable=true"
-      - "traefik.tcp.routers.db.rule=HostSNI(`my-db`)"
+      - "traefik.tcp.routers.db.rule=HostSNI(`*`)"
       - "traefik.tcp.services.db.loadbalancer.server.port=3306"
       - "traefik.tcp.routers.db.entrypoints=mysql"
     volumes:
